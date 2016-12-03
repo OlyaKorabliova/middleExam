@@ -1,12 +1,9 @@
 package com.company;
 
 /**
- * Created by Olia on 28.11.2016.
+ * Created by Olia on 01.12.2016.
  */
-public class skiPass extends Abonement {
-
-    protected skiPass(AbonementSpec spec) {
-        super(spec);
-        this.spec = spec;
-    }
+abstract public class SkiPass {
+    protected Days days;
+    protected Lifts lifts;
 }

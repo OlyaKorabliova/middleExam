@@ -1,49 +1,52 @@
 package com.company;
 
 /**
- * Created by Olia on 28.11.2016.
+ * Created by Olia on 01.12.2016.
  */
+
 public class Tourniquet {
 
-    protected skiPass abonement;
+    protected Abonnement abonnement;
 
-    private Tourniquet(skiPass abonement) throws Exception {
-        this.abonement = abonement;
+    protected Tourniquet(Abonnement abonnement) {
+        this.abonnement = abonnement;
         check();
     }
 
-    private boolean verificationOfAbonement() {
-        if ((abonement.getId() != null || abonement.getId().length() < 10) && abonement.getValidity() != Validity.NO_VALIDITY &&
-                abonement.getCardType() != CardType.NO_TYPE && abonement.getNumOfLifts() != 0) {
-            return true;
+    protected boolean verification() {
+        if (abonnement.getId() != null && abonnement.getSkiPass() != null) {
+            if (abonnement.getDays() != null && abonnement.getDays().getAmountOfDays() > 0) {
+                return true;
+            } else if (abonnement.getLifts() != null && abonnement.getLifts().getAmountOfLifts() > 0) {
+                return true;
+            }
         }
         return false;
     }
 
-    private void check() throws Exception {
-        if (verificationOfAbonement()) {
-            if (abonement.getCardType() != CardType.SEASON) {
-                abonement.setNumOfLifts(abonement.getNumOfLifts() - 1);
-                }
-            else {
+    protected void block() {
+        abonnement.validness = false;
+    }
 
+    protected void unblock() {
+        abonnement.validness = true;
+    }
+
+    protected void check() {
+        if (verification()) {
+            if (abonnement.getDays() != null) {
+                abonnement.getDays().amountOfDays--;
             }
-
-
+            else if (abonnement.getLifts() != null) {
+                abonnement.getLifts().amountOfLifts--;
+            }
+            System.out.println("VALID!");
             unblock();
         }
         else {
+            System.out.println("INVALID!\tYour abonnement is blocked! Ask at the service centre!");
             block();
-            throw new Exception("Entry isn't allowed for you! Ask at the reception!");
         }
     }
 
-    public void unblock() {
-        abonement.setValidness(true);
-
-    }
-
-    public void block() {
-        abonement.setValidness(false);
-    }
 }
